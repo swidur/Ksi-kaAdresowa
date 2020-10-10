@@ -6,12 +6,14 @@ using System.Text;
 
 namespace KADataAccess
 {
-    class KAContext : DbContext
+    public class KAContext : DbContext
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite("Data Source=ksiazkaAdresowa.db");
+            optionsBuilder.UseSqlite("Data Source=C:\\Temp\\ksiazkaAdresowa.db");
         }
+
+
 
 
         public DbSet<Contact> Contact { get; set; }
