@@ -1,16 +1,16 @@
 ﻿using KADataAccess.Models;
 using KADataAccess;
-using KARepository.Ifrastructure.Repositories.Interfaces;
+using KARepository.Infrastructure.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace KARepository.Ifrastructure.Repositories.Implementations
+namespace KARepository.Infrastructure.Repositories.Implementations
 {
-    public class UserEFRepo : IUserRepo
+    public class ContactEFRepo : IContactRepo
     {
         private readonly KAContext context;
-        public UserEFRepo(KAContext context)
+        public ContactEFRepo(KAContext context)
         {
             this.context = context;
         }

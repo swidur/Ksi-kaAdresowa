@@ -1,11 +1,9 @@
 ﻿using KADataAccess.Models;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
-namespace KARepository.Ifrastructure.Repositories.Interfaces
+namespace KARepository.Infrastructure.Repositories.Interfaces
 {
-    interface IUserRepo
+    interface IContactRepo
     {
         public IEnumerable<Contact> GetAllContacts();
         public Contact GetContactById(int id);
