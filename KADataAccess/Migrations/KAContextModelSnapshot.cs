@@ -26,7 +26,6 @@ namespace KADataAccess.Migrations
                         .HasMaxLength(2500);
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("FirstName")
@@ -35,12 +34,10 @@ namespace KADataAccess.Migrations
                         .HasMaxLength(50);
 
                     b.Property<string>("LastName")
-                        .IsRequired()
                         .HasColumnType("TEXT")
                         .HasMaxLength(50);
 
                     b.Property<string>("Phone")
-                        .IsRequired()
                         .HasColumnType("TEXT")
                         .HasMaxLength(20);
 

@@ -13,9 +13,9 @@ namespace KADataAccess.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     FirstName = table.Column<string>(maxLength: 50, nullable: false),
-                    LastName = table.Column<string>(maxLength: 50, nullable: false),
-                    Phone = table.Column<string>(maxLength: 20, nullable: false),
-                    Email = table.Column<string>(nullable: false),
+                    LastName = table.Column<string>(maxLength: 50, nullable: true),
+                    Phone = table.Column<string>(maxLength: 20, nullable: true),
+                    Email = table.Column<string>(nullable: true),
                     Comment = table.Column<string>(maxLength: 2500, nullable: true)
                 },
                 constraints: table =>

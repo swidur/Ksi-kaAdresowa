@@ -13,9 +13,6 @@ namespace KADataAccess
             optionsBuilder.UseSqlite("Data Source=C:\\Temp\\ksiazkaAdresowa.db");
         }
 
-
-
-
         public DbSet<Contact> Contact { get; set; }
     }
 
