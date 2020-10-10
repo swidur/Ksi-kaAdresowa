@@ -1,4 +1,6 @@
-﻿using KsiążkaAdresowaGUI.Classes;
+﻿using KADataAccess;
+using KADataAccess.Models;
+using KARepository.Ifrastructure.Repositories.Implementations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,22 +23,23 @@ namespace KsiążkaAdresowaGUI
     /// </summary>
     public partial class MainWindow : Window
     {
-        List<Person> people = new List<Person>();
+        List<Contact> people = new List<Contact>();
         public MainWindow()
         {
             InitializeComponent();
 
-            people.Add(new Person { FirstName = "Andrzej", LastName = "Lepper", Email = "alepper@polskawies.gov", Phone = "+48 699 488 251" });
-            people.Add(new Person { FirstName = "Ireneusz", LastName = "Lis", Email = "lis@gmail.com", Phone = "+48 699 231 251" });
-            people.Add(new Person { FirstName = "Tadeusz", LastName = "Kościuszko", Email = "", Phone = "+48 111 000 111" });
-            people.Add(new Person { FirstName = "Roman", LastName = "Giertych", Email = "maturatobzdura@buziaczek.pl", Phone = "+48 444 488 251" });
+            var mapper = new IMapper();
+
+            var repo = new UserEFRepo(new KAContext());
+            people = repo.GetAllContacts().ToList();
+
 
             ListOfContacts.ItemsSource = people;
         }
 
         private void AddContact_Clik(object sender, RoutedEventArgs e)
         {
-
+            throw new NotImplementedException();
         }
 
         private void Contacts_Clik(object sender, RoutedEventArgs e)
