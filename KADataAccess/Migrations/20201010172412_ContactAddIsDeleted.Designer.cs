@@ -2,14 +2,16 @@
 using KADataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace KADataAccess.Migrations
 {
     [DbContext(typeof(KAContext))]
-    partial class KAContextModelSnapshot : ModelSnapshot
+    [Migration("20201010172412_ContactAddIsDeleted")]
+    partial class ContactAddIsDeleted
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
