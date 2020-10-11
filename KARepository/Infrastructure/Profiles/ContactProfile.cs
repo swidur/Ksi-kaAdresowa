@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
-using KsiążkaAdresowaGUI.DTOs;
+using KARepository.DTOs;
 using KADataAccess.Models;
 
 namespace KARepository.Infrastructure.Profiles
 {
-    class ContactProfile : Profile
+    public class ContactProfile : Profile
     {
         public ContactProfile()
         {

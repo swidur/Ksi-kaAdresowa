@@ -35,9 +35,30 @@ namespace KARepository.Infrastructure.Repositories.Implementations
             context.Contact.Remove(contact);
         }
 
-        public IEnumerable<Contact> GetAllContacts()
+        public IEnumerable<Contact> GetAllContacts(string where)
         {
-            return context.Contact.ToList();
+            where = where.ToLower();
+            return context.Contact.
+                Where(c => c.FirstName.ToLower().Contains(where) ||
+                            c.LastName.ToLower().Contains(where) ||
+                            c.Comment.ToLower().Contains(where) ||
+                            c.Phone.ToLower().Contains(where) ||
+                            c.Email.ToLower().Contains(where)).
+                Where(c => c.IsDeleted == false).
+                    ToList();
+        }
+
+        public IEnumerable<Contact> GetAllDeletedContacts(string where)
+        {
+            where = where.ToLower();
+            return context.Contact.
+                Where(c => c.FirstName.ToLower().Contains(where) ||
+                            c.LastName.ToLower().Contains(where) ||
+                            c.Comment.ToLower().Contains(where) ||
+                            c.Phone.ToLower().Contains(where) ||
+                            c.Email.ToLower().Contains(where)).
+                Where(c => c.IsDeleted == true).
+                    ToList();
         }
 
         public Contact GetContactById(int id)
@@ -63,6 +84,6 @@ namespace KARepository.Infrastructure.Repositories.Implementations
             return (context.SaveChanges() >= 0);
         }
 
-       
+     
     }
 }

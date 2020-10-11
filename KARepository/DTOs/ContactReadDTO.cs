@@ -5,7 +5,7 @@ using System.Text;
 
 namespace KARepository.DTOs
 {
-    class ContactReadDTO
+    public class ContactReadDTO
     {
         [Required]
         public int Id { get; set; }

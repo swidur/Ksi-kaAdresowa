@@ -5,7 +5,7 @@ using System.Text;
 
 namespace KARepository.DTOs
 {
-    class ContactCreateDTO
+    public class ContactCreateDTO
     {
         [Required]
         [MaxLength(50)]
@@ -22,5 +22,7 @@ namespace KARepository.DTOs
 
         [MaxLength(2500)]
         public string Comment { get; set; }
+
+        public bool IsDeleted { get; set; }
     }
 }
