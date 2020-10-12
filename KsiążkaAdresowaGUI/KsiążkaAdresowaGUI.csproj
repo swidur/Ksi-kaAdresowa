@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\KADataAccess\KADataAccess.csproj" />
     <ProjectReference Include="..\KARepository\KARepository.csproj" />
   </ItemGroup>
 
