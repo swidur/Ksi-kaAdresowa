@@ -1,20 +1,11 @@
 ﻿using KADataAccess;
 using KADataAccess.Models;
 using KARepository.Infrastructure.Repositories.Implementations;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 
-namespace KsiążkaAdresowaGUI
+namespace KsiążkaAdresowaGUI.Windows
 {
     /// <summary>
     /// Logika interakcji dla klasy AddContactWindow.xaml
@@ -30,7 +21,7 @@ namespace KsiążkaAdresowaGUI
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
-            if (FirstNameTextBox.Text == "")
+            if (FirstNameTextBox.Text.Trim() == "")
             {
                 ResponseLabel.Content = "Podaj imię";
                 return;
@@ -51,7 +42,7 @@ namespace KsiążkaAdresowaGUI
                 LastNameTextBox.Text =
                 PhoneTextBox.Text =
                 EmailTextBox.Text =
-                CommentTextBox.Text = null;
+                CommentTextBox.Text = " ";
                 ResponseLabel.Content = "Dodano!";
 
             }
@@ -59,7 +50,7 @@ namespace KsiążkaAdresowaGUI
             
         private void ClearResponseLabel(object sender, TextChangedEventArgs e)
         {
-            ResponseLabel.Content = null;
+            ResponseLabel.Content = " ";
         }
     }
 }
