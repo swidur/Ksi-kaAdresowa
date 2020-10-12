@@ -15,4 +15,16 @@
     <ProjectReference Include="..\KARepository\KARepository.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Windows\EditContactWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Windows\EditContactWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+
 </Project>
