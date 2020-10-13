@@ -2,6 +2,7 @@
 using KADataAccess.Models;
 using KARepository.Infrastructure.Repositories.Implementations;
 using KsiążkaAdresowaGUI.Helpers;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Text.RegularExpressions;
 using System.Windows;
@@ -16,10 +17,14 @@ namespace KsiążkaAdresowaGUI.Windows
     public partial class EditContactWindow : Window
     {
         Contact selectedContact = ((MainWindow)Application.Current.MainWindow).selectedEdit;
-        ContactEFRepo repo = new ContactEFRepo(new KAContext());
+        KAContext _context;
+        ContactEFRepo _repo;
         public EditContactWindow()
         {
             InitializeComponent();
+            _context = new KAContext();
+            _repo = new ContactEFRepo(_context);
+
             FirstNameTextBox.Text = selectedContact.FirstName;
             LastNameTextBox.Text  = selectedContact.LastName;
             AgeTextBox.Text = Helper.SetAgeTextBoxFromContact(selectedContact);
@@ -56,7 +61,8 @@ namespace KsiążkaAdresowaGUI.Windows
             selectedContact.Email = EmailTextBox.Text;
             selectedContact.Comment = CommentTextBox.Text;
 
-            repo.SaveChanges();
+            _context.Entry(selectedContact).State = EntityState.Modified;
+            _repo.SaveChanges();
             this.Close();
         }
             

@@ -81,6 +81,13 @@
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding FirstName}" Header="Imię" />
                 <DataGridTextColumn Binding="{Binding LastName}" Header="Nazwisko" />
+                <DataGridTextColumn Binding="{Binding Sex}" Header="Płeć"/>
+                <DataGridTextColumn Binding="{Binding DateOfBirth}" Header="Data ur."/>
+                <DataGridTextColumn Binding="{Binding City}" Header="Miasto"/>
+                <DataGridTextColumn Binding="{Binding Street}" Header="Ulica"/>
+                <DataGridTextColumn Binding="{Binding AreaCode}" Header="Kod p."/>
+                <DataGridTextColumn Binding="{Binding HouseNumber}" Header="N. domu"/>
+                <DataGridTextColumn Binding="{Binding FlatNumber}" Header="N. mieszk."/>
                 <DataGridTextColumn Binding="{Binding Phone}" Header="Telefon"/>
                 <DataGridTextColumn Binding="{Binding Email}" Header="Email"/>
                 <DataGridTextColumn Binding="{Binding Comment}" Header="Uwagi" Width="*"/>

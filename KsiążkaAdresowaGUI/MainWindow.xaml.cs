@@ -117,6 +117,5 @@ namespace KsiążkaAdresowaGUI
         {
             throw new NotImplementedException();
         }
-
     }
 }
