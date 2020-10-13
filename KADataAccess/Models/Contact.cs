@@ -22,6 +22,20 @@ namespace KADataAccess.Models
         [MaxLength(50)]
         public string LastName { get; set; }
 
+        public string AreaCode { get; set; }
+
+        public string Street { get; set; }
+
+        public string City { get; set; }
+
+        public string HouseNumber { get; set; }
+
+        public string  FlatNumber { get; set; }
+
+        public string Sex { get; set; }
+
+        public DateTime? DateOfBirth { get; set; }
+
         [MaxLength(20)]
         public string Phone { get; set; }
 
