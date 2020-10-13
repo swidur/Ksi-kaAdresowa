@@ -1,11 +1,15 @@
-﻿using KADataAccess;
+﻿using AutoMapper;
+using KADataAccess;
 using KADataAccess.Models;
+using KARepository.Infrastructure.DTOs;
+using KARepository.Infrastructure.Profiles;
 using KARepository.Infrastructure.Repositories.Implementations;
-using System;
-using System.Windows;
-using System.Collections.ObjectModel;
-using System.Windows.Controls;
 using KsiążkaAdresowaGUI.Windows;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Windows;
+using System.Windows.Controls;
 
 namespace KsiążkaAdresowaGUI
 {
@@ -14,19 +18,23 @@ namespace KsiążkaAdresowaGUI
     /// </summary>
     public partial class MainWindow : Window
     {
-        public ObservableCollection<Contact> people;
-        ContactEFRepo repo;
-        public bool showActiveContacts = true;
-        public Contact selectedEdit;
+        public ObservableCollection<ContactReadDTO> people;
+        ContactEFRepo _repo;
+        public bool _showActiveContacts = true;
+        public ContactReadDTO _selectedEdit;
+        Mapper _mapper;
 
         public MainWindow()
         {
-            repo = new ContactEFRepo(new KAContext());
+            _repo = new ContactEFRepo();
+            MapperConfiguration config = new MapperConfiguration(cfg => cfg.AddProfile(new ContactProfile()));
+            _mapper = new Mapper(config);
+
         }
 
         private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (showActiveContacts)
+            if (_showActiveContacts)
             {
                 GetActiveContacts(SearchBox.Text);
             }
@@ -47,15 +55,21 @@ namespace KsiążkaAdresowaGUI
 
         public void GetActiveContacts(string where)
         {
+            KAContext context = new KAContext();
+
+            people = null;
             LocationLabel.Content = "Kontakty";
-            people = new ObservableCollection<Contact>(repo.GetAllContacts(where));
+            people = new ObservableCollection<ContactReadDTO>(_mapper.Map<IEnumerable<ContactReadDTO>>(_repo.GetAllContacts(context, where)));
             this.ContactsDataGrid.ItemsSource = people;
         }
 
+
         public void GetDeletedContacts(string where)
         {
+            KAContext context = new KAContext();
+
             LocationLabel.Content = "Kosz";
-            people = new ObservableCollection<Contact>(repo.GetAllDeletedContacts(where));
+            people = new ObservableCollection<ContactReadDTO>(_mapper.Map<IEnumerable<ContactReadDTO>>(_repo.GetAllDeletedContacts(context, where)));
             ContactsDataGrid.ItemsSource = people;
         }
 
@@ -71,14 +85,14 @@ namespace KsiążkaAdresowaGUI
         }
         private void Contacts_Clik(object sender, RoutedEventArgs e)
         {
-            showActiveContacts = true;
+            _showActiveContacts = true;
             SearchBox_SetText("");
             GetActiveContacts(SearchBox.Text);
         }
 
         private void Bin_Clik(object sender, RoutedEventArgs e)
         {
-            showActiveContacts = false;
+            _showActiveContacts = false;
             SearchBox_SetText("");
             GetDeletedContacts(SearchBox.Text);
         }
@@ -89,21 +103,29 @@ namespace KsiążkaAdresowaGUI
             var contextMenu = (ContextMenu)menuItem.Parent;
             var item = (DataGrid)contextMenu.PlacementTarget;
 
-            return (Contact)item.SelectedCells[0].Item;
+            return (ContactReadDTO)item.SelectedCells[0].Item;
         }
 
         private void Delete_DGContext(object sender, RoutedEventArgs e)
         {
-
-            var toDeleteFromDG = (Contact)GetDataGridElement(sender);
+            KAContext context = new KAContext();
+            var toDeleteFromDG = (ContactReadDTO)GetDataGridElement(sender);
             people.Remove(toDeleteFromDG);
-            toDeleteFromDG.IsDeleted = !toDeleteFromDG.IsDeleted;
-            repo.SaveChanges();
+
+            var contact = _mapper.Map<Contact>(toDeleteFromDG);
+            if (contact.IsDeleted)
+            {
+                contact.IsDeleted = false;
+                context.Update(contact);
+                _repo.SaveChanges(context);
+            }
+            else _repo.DeleteContact(context, contact);
+
         }
 
         private void Edit_DGContext(object sender, RoutedEventArgs e)
         {
-            selectedEdit = (Contact)GetDataGridElement(sender);
+            _selectedEdit = (ContactReadDTO)GetDataGridElement(sender);
 
             EditContactWindow addContactWindow = new EditContactWindow() { Owner = this };
             addContactWindow.ShowDialog();

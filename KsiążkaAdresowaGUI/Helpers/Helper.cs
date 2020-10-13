@@ -1,7 +1,4 @@
-﻿using KADataAccess.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using KARepository.Infrastructure.DTOs;
 using System.Windows.Controls;
 
 namespace KsiążkaAdresowaGUI.Helpers
@@ -35,26 +32,7 @@ namespace KsiążkaAdresowaGUI.Helpers
             return result;
         }
 
-        internal static string SetAgeTextBoxFromContact(Contact selectedContact)
-        {
-            if (selectedContact.DateOfBirth.HasValue)
-            {
-                return (DateTime.Now.Year - selectedContact.DateOfBirth.Value.Date.Year).ToString();
-            }
-            else return "";
-        }
-
-        internal static DateTime? GetDateOfBirthFromTextBox(TextBox ageTextBox)
-        {
-            DateTime? dob = null;
-            if (ageTextBox.Text.Trim() != "")
-            {
-                dob = DateTime.Now.AddYears(-int.Parse(ageTextBox.Text)).Date;
-            }
-            return dob;
-        }
-
-        public static int SetSexComboBoxFromContact(Contact contact)
+        public static int SetSexComboBoxFromContact(ContactReadDTO contact)
         {
             int result;
             switch (contact.Sex)

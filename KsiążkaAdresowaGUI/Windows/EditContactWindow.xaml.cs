@@ -1,9 +1,10 @@
-﻿using KADataAccess;
+﻿using AutoMapper;
+using KADataAccess;
 using KADataAccess.Models;
+using KARepository.Infrastructure.DTOs;
+using KARepository.Infrastructure.Profiles;
 using KARepository.Infrastructure.Repositories.Implementations;
 using KsiążkaAdresowaGUI.Helpers;
-using Microsoft.EntityFrameworkCore;
-using System;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
@@ -16,56 +17,60 @@ namespace KsiążkaAdresowaGUI.Windows
     /// </summary>
     public partial class EditContactWindow : Window
     {
-        Contact selectedContact = ((MainWindow)Application.Current.MainWindow).selectedEdit;
-        KAContext _context;
+        ContactReadDTO contactFromDataGrid = ((MainWindow)Application.Current.MainWindow)._selectedEdit;
         ContactEFRepo _repo;
+        private Mapper _mapper;
+
         public EditContactWindow()
         {
             InitializeComponent();
-            _context = new KAContext();
-            _repo = new ContactEFRepo(_context);
+            _repo = new ContactEFRepo();
+            MapperConfiguration config = new MapperConfiguration(cfg => cfg.AddProfile(new ContactProfile()));
+            _mapper = new Mapper(config);
 
-            FirstNameTextBox.Text = selectedContact.FirstName;
-            LastNameTextBox.Text  = selectedContact.LastName;
-            AgeTextBox.Text = Helper.SetAgeTextBoxFromContact(selectedContact);
-            SexComboBox.SelectedIndex = Helper.SetSexComboBoxFromContact(selectedContact);
-            CityTextBox.Text  = selectedContact.City;
-            StreetTextBox.Text  = selectedContact.Street;
-            AreaCodeTextBox.Text  = selectedContact.AreaCode;
-            HouseNumberTextBox.Text  = selectedContact.HouseNumber;
-            FlatNumberTextBox.Text  = selectedContact.FlatNumber;
-            PhoneTextBox.Text     = selectedContact.Phone;
-            EmailTextBox.Text     = selectedContact.Email;
-            CommentTextBox.Text = selectedContact.Comment;
+            FirstNameTextBox.Text = contactFromDataGrid.FirstName;
+            LastNameTextBox.Text = contactFromDataGrid.LastName;
+            AgeTextBox.Text = contactFromDataGrid.Age != null ? contactFromDataGrid.Age.ToString() : "";
+            SexComboBox.SelectedIndex = Helper.SetSexComboBoxFromContact(contactFromDataGrid);
+            CityTextBox.Text = contactFromDataGrid.City;
+            StreetTextBox.Text = contactFromDataGrid.Street;
+            AreaCodeTextBox.Text = contactFromDataGrid.AreaCode;
+            HouseNumberTextBox.Text = contactFromDataGrid.HouseNumber;
+            FlatNumberTextBox.Text = contactFromDataGrid.FlatNumber;
+            PhoneTextBox.Text = contactFromDataGrid.Phone;
+            EmailTextBox.Text = contactFromDataGrid.Email;
+            CommentTextBox.Text = contactFromDataGrid.Comment;
         }
-
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
+            KAContext context = new KAContext();
+
             if (FirstNameTextBox.Text == "")
             {
                 ResponseLabel.Content = "Podaj imię";
                 return;
-            }         
+            }
 
-            selectedContact.FirstName = FirstNameTextBox.Text;
-            selectedContact.LastName = LastNameTextBox.Text;
-            selectedContact.DateOfBirth = Helper.GetDateOfBirthFromTextBox(AgeTextBox);
-            selectedContact.Sex = Helper.GetSexComboBoxSelectedItemText(SexComboBox);
-            selectedContact.AreaCode = AreaCodeTextBox.Text;
-            selectedContact.City = CityTextBox.Text;
-            selectedContact.Street = StreetTextBox.Text;
-            selectedContact.HouseNumber = HouseNumberTextBox.Text;
-            selectedContact.FlatNumber = FlatNumberTextBox.Text;
-            selectedContact.Phone = PhoneTextBox.Text;
-            selectedContact.Email = EmailTextBox.Text;
-            selectedContact.Comment = CommentTextBox.Text;
+            contactFromDataGrid.FirstName = FirstNameTextBox.Text;
+            contactFromDataGrid.LastName = LastNameTextBox.Text;
+            contactFromDataGrid.Age = AgeTextBox.Text != "" ? int.Parse(AgeTextBox.Text) : -1;
+            contactFromDataGrid.Sex = Helper.GetSexComboBoxSelectedItemText(SexComboBox);
+            contactFromDataGrid.AreaCode = AreaCodeTextBox.Text;
+            contactFromDataGrid.City = CityTextBox.Text;
+            contactFromDataGrid.Street = StreetTextBox.Text;
+            contactFromDataGrid.HouseNumber = HouseNumberTextBox.Text;
+            contactFromDataGrid.FlatNumber = FlatNumberTextBox.Text;
+            contactFromDataGrid.Phone = PhoneTextBox.Text;
+            contactFromDataGrid.Email = EmailTextBox.Text;
+            contactFromDataGrid.Comment = CommentTextBox.Text;
 
-            _context.Entry(selectedContact).State = EntityState.Modified;
-            _repo.SaveChanges();
+            Contact contact = _mapper.Map<Contact>(contactFromDataGrid);
+            context.Update(contact);
+            _repo.SaveChanges(context);
             this.Close();
         }
-            
+
         private void ClearResponseLabel(object sender, TextChangedEventArgs e)
         {
             ResponseLabel.Content = " ";

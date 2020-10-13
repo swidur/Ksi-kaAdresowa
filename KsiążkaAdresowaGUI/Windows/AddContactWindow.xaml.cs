@@ -1,8 +1,10 @@
-﻿using KADataAccess;
+﻿using AutoMapper;
+using KADataAccess;
 using KADataAccess.Models;
+using KARepository.Infrastructure.DTOs;
+using KARepository.Infrastructure.Profiles;
 using KARepository.Infrastructure.Repositories.Implementations;
 using KsiążkaAdresowaGUI.Helpers;
-using System;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
@@ -16,26 +18,30 @@ namespace KsiążkaAdresowaGUI.Windows
     public partial class AddContactWindow : Window
     {
         ContactEFRepo _repo;
+        private Mapper _mapper;
         public AddContactWindow()
         {
             InitializeComponent();
-            _repo = new ContactEFRepo(new KAContext());
+            _repo = new ContactEFRepo();
+            MapperConfiguration config = new MapperConfiguration(cfg => cfg.AddProfile(new ContactProfile()));
+            _mapper = new Mapper(config);
         }
-
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
+            KAContext context = new KAContext();
+
             if (FirstNameTextBox.Text.Trim() == "")
             {
                 ResponseLabel.Content = "Podaj imię";
                 return;
             }
 
-            _repo.CreateContact(new Contact()
+            Contact newContact = _mapper.Map<Contact>(new ContactCreateDTO()
             {
                 FirstName = FirstNameTextBox.Text,
                 LastName = LastNameTextBox.Text,
-                DateOfBirth = Helper.GetDateOfBirthFromTextBox(AgeTextBox),
+                Age = AgeTextBox.Text != "" ? int.Parse(AgeTextBox.Text) : -1,
                 Sex = Helper.GetSexComboBoxSelectedItemText(SexComboBox),
                 AreaCode = AreaCodeTextBox.Text,
                 City = CityTextBox.Text,
@@ -47,12 +53,15 @@ namespace KsiążkaAdresowaGUI.Windows
                 Comment = CommentTextBox.Text
             });
 
-            if (_repo.SaveChanges())
+
+            _repo.CreateContact(context, newContact);
+
+            if (_repo.SaveChanges(context))
             {
                 FirstNameTextBox.Text =
                 LastNameTextBox.Text =
-                AgeTextBox.Text = 
-                AreaCodeTextBox.Text = 
+                AgeTextBox.Text =
+                AreaCodeTextBox.Text =
                 CityTextBox.Text =
                 StreetTextBox.Text =
                 HouseNumberTextBox.Text =
@@ -70,7 +79,6 @@ namespace KsiążkaAdresowaGUI.Windows
             Regex regex = new Regex("[^0-9]+");
             e.Handled = regex.IsMatch(e.Text);
         }
-
 
         private void ClearResponseLabel(object sender, TextChangedEventArgs e)
         {
