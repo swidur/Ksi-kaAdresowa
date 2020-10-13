@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:KsiążkaAdresowaGUI"
         mc:Ignorable="d" FontSize="18" FontFamily="Segoe UI Light"
-        Title="Dodaj kontakt" Height="220" Width="400"
-        MaxHeight="220" MaxWidth="400"
+        Title="Dodaj kontakt" Height="350" Width="500"
+        MaxHeight="350" MaxWidth="500"
         WindowStartupLocation="CenterOwner"
         >
     <Grid>
@@ -25,6 +25,9 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="10px"/>
         </Grid.RowDefinitions>
@@ -35,17 +38,52 @@
         <Label Content="Nazwisko" Grid.Row="1" Grid.Column="3"/>
         <TextBox MinWidth="100" Height="27"  x:Name="LastNameTextBox" 
                  TextChanged="ClearResponseLabel" Grid.Row="1" Grid.Column="4"/>
+        
         <Label Content="Tel." Grid.Row="2" Grid.Column="1" Margin="0,5"/>
         <TextBox MinWidth="100" Height="27" x:Name="PhoneTextBox"  
                  TextChanged="ClearResponseLabel" Grid.Row="2" Grid.Column="2" Margin="0,5"/>
         <Label Content="Email" Grid.Row="2" Grid.Column="3" Margin="0,5"/>
         <TextBox MinWidth="100" Height="27"  x:Name="EmailTextBox" TextChanged="ClearResponseLabel" 
                  Grid.Row="2" Grid.Column="4" Margin="0,5"/>
-        <Label Content="Komentarz" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" Margin="0,5"/>
+
+        <Label Content="Wiek" Grid.Row="3" Grid.Column="1" Margin="0,5"/>
+        <TextBox MinWidth="100" Height="27" x:Name="AgeTextBox"
+                 TextChanged="ClearResponseLabel" Grid.Row="3" Grid.Column="2" Margin="0,5"
+                 PreviewTextInput="NumberValidationAgeTextBox"/>
+        
+       
+        <Label Content="Płeć" Grid.Row="3" Grid.Column="3" Margin="0,5"/>
+        <ComboBox  x:Name="SexComboBox"
+                 Grid.Row="3" Grid.Column="4" Margin="0,5">
+            <ComboBoxItem>Kobieta</ComboBoxItem>
+            <ComboBoxItem>Mężczyzna</ComboBoxItem>
+        </ComboBox>
+
+       <Label Content="Miasto" Grid.Row="4" Grid.Column="1" Margin="0,5"/>
+        <TextBox MinWidth="100" Height="27" x:Name="CityTextBox"  
+                 TextChanged="ClearResponseLabel" Grid.Row="4" Grid.Column="2" Margin="0,5"/>
+        <Label Content="Ulica" Grid.Row="4" Grid.Column="3" Margin="0,5"/>
+        <TextBox MinWidth="100" Height="27"  x:Name="StreetTextBox" TextChanged="ClearResponseLabel" 
+                 Grid.Row="4" Grid.Column="4" Margin="0,5"/>
+      
+        <Label Content="Kod poczt." Grid.Row="5" Grid.Column="1" Margin="0,5"/>
+        <TextBox MinWidth="100" Height="27" x:Name="AreaCodeTextBox"  
+                 TextChanged="ClearResponseLabel" Grid.Row="5" Grid.Column="2" Margin="0,5"/>
+        <Label Content="Numer" Grid.Row="5" Grid.Column="3" Margin="0,5"/>
+        <TextBox MaxWidth="50" MinWidth="50" Height="27"  x:Name="HouseNumberTextBox" TextChanged="ClearResponseLabel" 
+                 Grid.Row="5" Grid.Column="4" Margin="0,5" HorizontalAlignment="Left"/>
+        <Label Content="/" Grid.Row="5" Grid.Column="4"  Margin="48,5,0,0"/>
+        <TextBox MaxWidth="50" MinWidth="50" Height="27" x:Name="FlatNumberTextBox" TextChanged="ClearResponseLabel" 
+                 Grid.Row="5" Grid.Column="4" Margin="63,0,0,0" HorizontalAlignment="Left"/>
+
+
+        <Label Content="Uwagi" Grid.Row="6" Grid.Column="1"  Margin="0,5"/>
         <TextBox MinWidth="100" Height="27"  x:Name="CommentTextBox" TextChanged="ClearResponseLabel" 
-                 Grid.Row="3" Grid.Column="3" Grid.ColumnSpan="2" Margin="0,5"/>
-        <Button x:Name="AddButton" Content="Dodaj" Grid.Row="4" Grid.Column="4" Margin="0,5" Click="AddButton_Click"/>
-        <Label x:Name="ResponseLabel" Content=" " Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2" Margin="0,5"/>
+                 Grid.Row="6" Grid.Column="2" Grid.ColumnSpan="3" Margin="0,5"/>
+        
+        
+        <Button x:Name="AddButton" Content="Dodaj" Grid.Row="7" Grid.Column="4" Margin="0,5" Click="AddButton_Click"/>
+        <Label x:Name="ResponseLabel" Content=" " Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="2" Margin="0,5"/>
 
     </Grid>
 </Window>
