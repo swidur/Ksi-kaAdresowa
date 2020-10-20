@@ -74,10 +74,6 @@ namespace KsiążkaAdresowaGUI
             addContactWindow.ShowDialog();
         }
 
-        private void SearchBox_SetText(string newText)
-        {
-            SearchBox.Text = newText;
-        }
         private void Contacts_Clik(object sender, RoutedEventArgs e)
         {
             _showActiveContacts = true;
@@ -101,20 +97,31 @@ namespace KsiążkaAdresowaGUI
 
         private void Delete_DGContext(object sender, RoutedEventArgs e)
         {
-            var toDeleteFromDG = (ContactReadDTO)GetDataGridElement(sender);
-            people.Remove(toDeleteFromDG);
+            try
+            {
+                var toDeleteFromDG = (ContactReadDTO)GetDataGridElement(sender);
+                people.Remove(toDeleteFromDG);
 
-            var contact = _mapper.Map<Contact>(toDeleteFromDG);
-            contact.IsDeleted = !contact.IsDeleted;
-            _repo.UpdateContact(contact);
+                var contact = _mapper.Map<Contact>(toDeleteFromDG);
+                contact.IsDeleted = !contact.IsDeleted;
+                _repo.UpdateContact(contact);
+            }
+            catch 
+            {
+            }
         }
 
         private void Edit_DGContext(object sender, RoutedEventArgs e)
         {
-            _selectedEdit = (ContactReadDTO)GetDataGridElement(sender);
-
-            EditContactWindow addContactWindow = new EditContactWindow() { Owner = this };
-            addContactWindow.ShowDialog();
+            try
+            {
+                _selectedEdit = (ContactReadDTO)GetDataGridElement(sender);
+                EditContactWindow addContactWindow = new EditContactWindow() { Owner = this };
+                addContactWindow.ShowDialog();
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+            }
         }
 
         private void Export_Clik(object sender, RoutedEventArgs e)
