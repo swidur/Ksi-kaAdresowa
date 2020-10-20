@@ -54,7 +54,7 @@ namespace KsiążkaAdresowaGUI.Windows
             });
 
 
-            _repo.CreateContact(context, newContact);
+            _repo.CreateContact(newContact);
 
             if (_repo.SaveChanges(context))
             {

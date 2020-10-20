@@ -14,18 +14,21 @@ namespace KARepository.Infrastructure.Repositories.Implementations
         {
         }
 
-        public void CreateContact(KAContext context, Contact contact)
+        public void CreateContact(Contact contact)
         {
+            KAContext context = new KAContext();
             if (contact == null)
             {
                 throw new ArgumentException(nameof(contact));
             }
 
             context.Contact.Add(contact);
+            SaveChanges(context);
         }
 
-        public void DeleteContact(KAContext context, Contact contact)
+        public void DeleteContact(Contact contact)
         {
+            KAContext context = new KAContext();
             if (contact == null)
             {
                 throw new ArgumentException(nameof(contact));
@@ -36,8 +39,9 @@ namespace KARepository.Infrastructure.Repositories.Implementations
             SaveChanges(context);
         }
 
-        public IEnumerable<Contact> GetAllContacts(KAContext context, string where)
+        public IEnumerable<Contact> GetAllContacts(string where)
         {
+            KAContext context = new KAContext();
             where = where.ToLower();
             var result = context.Contact.AsNoTracking().
                 Where(c => c.FirstName.ToLower().Contains(where) ||
@@ -56,8 +60,9 @@ namespace KARepository.Infrastructure.Repositories.Implementations
             return result;
         }
 
-        public IEnumerable<Contact> GetAllDeletedContacts(KAContext context, string where)
+        public IEnumerable<Contact> GetAllDeletedContacts(string where)
         {
+            KAContext context = new KAContext();
             where = where.ToLower();
             return context.Contact.AsNoTracking().
                 Where(c => c.FirstName.ToLower().Contains(where) ||
@@ -75,14 +80,17 @@ namespace KARepository.Infrastructure.Repositories.Implementations
                     ToList();
         }
 
-        public Contact GetContactById(KAContext context, int id)
+        public Contact GetContactById(int id)
         {
+            KAContext context = new KAContext();
             return context.Contact.Find(id);
         }
 
-        public void UpdateContact(KAContext context, Contact contact)
+        public void UpdateContact(Contact contact)
         {
-
+            KAContext context = new KAContext();
+            context.Update(contact);
+            this.SaveChanges(context);
         }
 
         public bool SaveChanges(KAContext context)

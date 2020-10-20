@@ -32,44 +32,39 @@ namespace KsiążkaAdresowaGUI
 
         }
 
+        private void ShowActiveOrDeleted()
+        {
+            if (_showActiveContacts) GetActiveContacts(SearchBox.Text);
+            else GetDeletedContacts(SearchBox.Text);
+        }
+
         private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (_showActiveContacts)
-            {
-                GetActiveContacts(SearchBox.Text);
-            }
-            else
-            {
-                GetDeletedContacts(SearchBox.Text);
-            }
+            ShowActiveOrDeleted();
         }
         private void ContactsDataGrid_Loaded(object sender, RoutedEventArgs e)
         {
-            GetActiveContacts(SearchBox.Text);
+            ShowActiveOrDeleted();
         }
-
+       
         private void WindowActivated(object sender, EventArgs e)
         {
-            GetActiveContacts(SearchBox.Text);
+            ShowActiveOrDeleted();
         }
 
         public void GetActiveContacts(string where)
         {
-            KAContext context = new KAContext();
-
             people = null;
             LocationLabel.Content = "Kontakty";
-            people = new ObservableCollection<ContactReadDTO>(_mapper.Map<IEnumerable<ContactReadDTO>>(_repo.GetAllContacts(context, where)));
+            people = new ObservableCollection<ContactReadDTO>(_mapper.Map<IEnumerable<ContactReadDTO>>(_repo.GetAllContacts(where)));
             this.ContactsDataGrid.ItemsSource = people;
         }
 
 
         public void GetDeletedContacts(string where)
         {
-            KAContext context = new KAContext();
-
             LocationLabel.Content = "Kosz";
-            people = new ObservableCollection<ContactReadDTO>(_mapper.Map<IEnumerable<ContactReadDTO>>(_repo.GetAllDeletedContacts(context, where)));
+            people = new ObservableCollection<ContactReadDTO>(_mapper.Map<IEnumerable<ContactReadDTO>>(_repo.GetAllDeletedContacts(where)));
             ContactsDataGrid.ItemsSource = people;
         }
 
@@ -86,14 +81,12 @@ namespace KsiążkaAdresowaGUI
         private void Contacts_Clik(object sender, RoutedEventArgs e)
         {
             _showActiveContacts = true;
-            SearchBox_SetText("");
             GetActiveContacts(SearchBox.Text);
         }
 
         private void Bin_Clik(object sender, RoutedEventArgs e)
         {
             _showActiveContacts = false;
-            SearchBox_SetText("");
             GetDeletedContacts(SearchBox.Text);
         }
 
@@ -108,19 +101,12 @@ namespace KsiążkaAdresowaGUI
 
         private void Delete_DGContext(object sender, RoutedEventArgs e)
         {
-            KAContext context = new KAContext();
             var toDeleteFromDG = (ContactReadDTO)GetDataGridElement(sender);
             people.Remove(toDeleteFromDG);
 
             var contact = _mapper.Map<Contact>(toDeleteFromDG);
-            if (contact.IsDeleted)
-            {
-                contact.IsDeleted = false;
-                context.Update(contact);
-                _repo.SaveChanges(context);
-            }
-            else _repo.DeleteContact(context, contact);
-
+            contact.IsDeleted = !contact.IsDeleted;
+            _repo.UpdateContact(contact);
         }
 
         private void Edit_DGContext(object sender, RoutedEventArgs e)
