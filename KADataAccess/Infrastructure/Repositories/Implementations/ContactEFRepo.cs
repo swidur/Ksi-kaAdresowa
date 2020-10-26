@@ -1,12 +1,12 @@
 ﻿using KADataAccess;
 using KADataAccess.Models;
-using KARepository.Infrastructure.Repositories.Interfaces;
+using KADataAccess.Infrastructure.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace KARepository.Infrastructure.Repositories.Implementations
+namespace KADataAccesss.Infrastructure.Repositories.Implementations
 {
     public class ContactEFRepo : IContactRepo
     {

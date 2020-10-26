@@ -2,9 +2,9 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace KARepository.Infrastructure.DTOs
+namespace KADataAccess.Infrastructure.DTOs
 {
-    public class ContactReadDTO
+    public class ContactCreateDTO
     {
         public int? Age
         {
@@ -67,3 +67,4 @@ namespace KARepository.Infrastructure.DTOs
         public string Comment { get; set; }
     }
 }
+

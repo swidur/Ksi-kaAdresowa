@@ -1,8 +1,7 @@
-﻿using KADataAccess;
-using KADataAccess.Models;
+﻿using KADataAccess.Models;
 using System.Collections.Generic;
 
-namespace KARepository.Infrastructure.Repositories.Interfaces
+namespace KADataAccess.Infrastructure.Repositories.Interfaces
 {
     interface IContactRepo
     {

@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using KADataAccess.Models;
-using KARepository.Infrastructure.DTOs;
+using KADataAccess.Infrastructure.DTOs;
 
-namespace KARepository.Infrastructure.Profiles
+namespace KADataAccess.Infrastructure.Profiles
 {
     public class ContactProfile : Profile
     {
