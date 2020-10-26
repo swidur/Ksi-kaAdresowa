@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace KADataAccesss.Infrastructure.Repositories.Implementations
+namespace KADataAccess.Infrastructure.Repositories.Implementations
 {
     public class ContactEFRepo : IContactRepo
     {
