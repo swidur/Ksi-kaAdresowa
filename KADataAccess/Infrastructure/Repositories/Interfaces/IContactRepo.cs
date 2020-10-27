@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace KADataAccess.Infrastructure.Repositories.Interfaces
 {
-    interface IContactRepo
+    public interface IContactRepo
     {
         public IEnumerable<Contact> GetAllContacts(string where);
         public IEnumerable<Contact> GetAllDeletedContacts(string where);
